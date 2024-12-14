@@ -144,6 +144,12 @@ if not DEBUG:
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Sesiones
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # O cualquier backend que estés usando
+SESSION_COOKIE_NAME = 'sessionid'
+
 LOGIN_URL = '/signin/'
 
 LOGIN_REDIRECT_URL = '/menu/'
+
+LOGOUT_REDIRECT_URL = '/'  # O la URL a la que deseas redirigir después de cerrar sesión

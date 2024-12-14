@@ -135,3 +135,23 @@ def usuarios(request):
 
     # Pasa los usuarios al contexto
     return render(request, 'usuarios.html', {'usuarios': usuarios})
+
+
+
+# Vista para eliminar un usuario
+def eliminar_usuario(request, user_id):
+    usuario = get_object_or_404(User, id=user_id)
+    usuario.delete()
+    messages.success(request, 'Usuario eliminado exitosamente.')
+    return redirect('usuarios')  # Redirige a la lista de usuarios
+
+# Vista para actualizar un usuario (ejemplo de actualización de email)
+def actualizar_usuario(request, user_id):
+    usuario = get_object_or_404(User, id=user_id)
+    if request.method == 'POST':
+        nuevo_email = request.POST.get('email')
+        usuario.email = nuevo_email
+        usuario.save()
+        messages.success(request, 'Usuario actualizado exitosamente.')
+        return redirect('usuarios')  # Redirige a la lista de usuarios
+    return render(request, 'actualizar_usuario.html', {'usuario': usuario})
