@@ -1,8 +1,20 @@
-from django.shortcuts import render
-import folium
+from django.shortcuts import render, redirect
 from folium.plugins import HeatMap
-from .models import Task
 import random
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
+from django.http import HttpResponse
+from .forms import TaskForm
+from .models import Task
+import folium
+from folium.plugins import FastMarkerCluster
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+
 # Create your views here.
 
 def generate_random_locations():
@@ -61,3 +73,57 @@ def menu(request):
   
     context = {'map':initialMap._repr_html_()}
     return render(request, 'menu.html', context)
+
+
+
+def signup(request):
+    if request.method == 'GET':
+        return render(request, 'signup.html', {
+            'form': UserCreationForm
+        })
+    else:
+        if request.POST['password1'] == request.POST['password2']:
+            try:
+                #Registro del usuario
+                user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
+                user.save()
+                login(request, user)
+                return redirect('tasks')
+            except IntegrityError:
+                return render(request, 'signup.html', {
+                    'form': UserCreationForm,
+                    "error": 'El usuario ya Existe'
+                })
+        return render(request, 'signup.html', {
+                    'form': UserCreationForm,
+                    'error': 'Las contraseñas no coinciden'})
+    
+
+
+def signout(request):
+    logout(request)
+    return redirect('index')
+
+
+def signin(request):
+    if request.method == 'GET':
+        return render(request, 'signin.html', {
+            'form': AuthenticationForm
+        })
+    else:
+        user =authenticate(request, username=request.POST['username'], password=request.POST['password'])
+        if user is None:
+            return render(request, 'signin.html', {
+                'form': AuthenticationForm,
+                'error': 'Usuario o Contraceña incorrecta'
+            })
+        
+        else:
+            login(request, user)
+            return redirect('menu')
+        
+
+
+def tasks(request):
+    tasks = Task.objects.all()
+    return render(request, 'tasks.html', {'tasks': tasks})
