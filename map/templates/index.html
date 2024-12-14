@@ -107,33 +107,50 @@
                 <!-- Center: Links -->
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="/">Home</a>
                     </li>
+
+                    {% if user.is_authenticated and user.is_superuser %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Administrador</a>
+                        <a class="nav-link" href="/admin">Administrador</a>
                     </li>
+                    {% endif %}
+
                     <li class="nav-item">
                         <a class="nav-link" href="#">Insertar</a>
                     </li>
+
+                    {% if user.is_authenticated and user.is_superuser %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">Usuarios</a>
                     </li>
+                    {% endif %}
+
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">Ubicaciones</a>
                     </li>
+                    {% endif %}
                 </ul>
 
                 <!-- Right: User Options -->
                 <ul class="navbar-nav">
+
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="#" class="btn btn-outline-light btn-sm nav-link">Iniciar Sesión</a>
+                        <a href="/logout" class="btn btn-outline-light btn-sm nav-link">Cerrar Sesión</a>
                     </li>
+
+                    {% else %}
                     <li class="nav-item">
-                        <a href="#" class="btn btn-outline-light btn-sm nav-link">Registrarse</a>
+                        <a href="/signup" class="btn btn-outline-light btn-sm nav-link">Registrarse</a>
                     </li>
+
                     <li class="nav-item">
-                        <a href="#" class="btn btn-outline-light btn-sm nav-link">Cerrar Sesión</a>
+                        <a href="/signin" class="btn btn-outline-light btn-sm nav-link">Iniciar Sesión</a>
                     </li>
+                    {% endif %}
+
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <img src="https://via.placeholder.com/40" alt="User" class="user-image">

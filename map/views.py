@@ -64,6 +64,7 @@ def index(request):
 
 
 # Vista menu.
+@login_required
 def menu(request):
 
 
@@ -123,7 +124,7 @@ def signin(request):
             return redirect('menu')
         
 
-
+@login_required
 def tasks(request):
     tasks = Task.objects.all()
     return render(request, 'tasks.html', {'tasks': tasks})
