@@ -67,11 +67,9 @@ def index(request):
 @login_required
 def menu(request):
 
-
     # Defino el mapa
     initialMap = folium.Map(location=[-33.45694, -70.64827], zoom_start=11)
 
-  
     context = {'map':initialMap._repr_html_()}
     return render(request, 'menu.html', context)
 
@@ -128,3 +126,12 @@ def signin(request):
 def tasks(request):
     tasks = Task.objects.all()
     return render(request, 'tasks.html', {'tasks': tasks})
+
+
+@login_required
+def usuarios(request):
+    # Si deseas obtener todos los usuarios:
+    usuarios = User.objects.all()
+
+    # Pasa los usuarios al contexto
+    return render(request, 'usuarios.html', {'usuarios': usuarios})

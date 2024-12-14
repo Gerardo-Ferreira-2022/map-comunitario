@@ -138,7 +138,7 @@
 
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="/logout" class="btn btn-outline-light btn-sm nav-link">Cerrar Sesión</a>
+                        <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm nav-link">Cerrar Sesión</a>
                     </li>
 
                     {% else %}
